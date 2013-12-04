@@ -24,18 +24,22 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		common = new Common(this);
 		authentication = new Authentication(this);
 		setContentView(R.layout.activity_main);
 		
 		//drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		
         drawerList = (ListView)findViewById(R.id.left_drawer);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray);
         drawerList.setAdapter(adapter);
-        
+     
 		
 		common.showShortToast(authentication.isLoggedIn() ? "Logged In" : "Logged Out");
 		common.showShortToast(authentication.getUsername());
+		
+		
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-// test update 123 123
+// test
 package com.example.studentessentials;
 
 public class AuthenticationException extends RuntimeException {

@@ -3,6 +3,7 @@ package com.example.studentessentials;
 /**
  * Author: Jakub Gawron
  * Date: 03.12.2013
+ * test 123
  */
 
 public class AuthenticationException extends RuntimeException {

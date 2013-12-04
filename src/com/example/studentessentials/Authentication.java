@@ -3,6 +3,7 @@ package com.example.studentessentials;
 /**
  * Author: Jakub Gawron
  * Date: 03.12.2013
+ * Test.
  */
 
 import android.content.Context;

@@ -1,5 +1,10 @@
 package com.example.studentessentials;
 
+/**
+ * Author: Jakub Gawron
+ * Date: 03.12.2013
+ */
+
 import android.content.Context;
 import android.content.SharedPreferences;
 

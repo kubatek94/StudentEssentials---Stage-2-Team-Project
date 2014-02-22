@@ -10,10 +10,25 @@ import android.view.View;
 import android.widget.EditText;
 //import android.widget.ProgressBar;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 public class LoginActivity extends Activity {
 	public Authentication authentication;
 	public Common common;
 
+	@Override
+	  public void onStart() {
+	    super.onStart();
+	    EasyTracker.getInstance(this).activityStart(this);
+	  }
+
+	  @Override
+	  public void onStop() {
+	    super.onStop();
+	    EasyTracker.getInstance(this).activityStop(this);
+	  }
+	  
+	  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -5,7 +5,7 @@ package com.example.studentessentials;
  * Date: 03.12.2013
  */
 
-import com.testflightapp.lib.TestFlight;
+
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -72,7 +72,7 @@ public class Authentication {
 	private void setLoggedIn(boolean loggedIn)
 	{
 		this.loggedIn = loggedIn;
-		TestFlight.passCheckpoint("USER LOGGED IN");
+
 	}
 	
 	public boolean isLoggedIn()
@@ -87,7 +87,7 @@ public class Authentication {
 		password = "";
 		
 		saveState();
-		TestFlight.passCheckpoint("USER LOGGED OUT");
+
 	}
 	
 	public boolean authenticate() throws AuthenticationException

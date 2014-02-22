@@ -14,7 +14,7 @@ public class MainActivity extends Activity {
     private String[] myStringArray = {
     		"Search",
     		"Digital Smart Card",
-    		"Student Deals",
+    		"Student Deals & Discounts",
     		"Student Nights"
     };
     

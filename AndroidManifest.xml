@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.studentessentials"
+    package="csc.team10.studentessentials"
     android:versionCode="1"
     android:versionName="0.011" >
 
@@ -12,11 +12,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:debuggable="true"
         android:theme="@style/AppTheme"
-        android:name="com.example.studentessentials.MyApplication" >
+        android:name="csc.team10.studentessentials.MyApplication" >
         <activity
-            android:name="com.example.studentessentials.LoginActivity"
+            android:name="csc.team10.studentessentials.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,9 +24,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.studentessentials.MainActivity"
+            android:name="csc.team10.studentessentials.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
+
     </application>
     
 	​<uses-permission android:name="android.permission.INTERNET"/>

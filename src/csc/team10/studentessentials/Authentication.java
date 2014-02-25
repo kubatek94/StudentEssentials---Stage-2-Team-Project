@@ -1,4 +1,4 @@
-package com.example.studentessentials;
+package csc.team10.studentessentials;
 
 /**
  * Author: Jakub Gawron

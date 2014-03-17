@@ -1,14 +1,19 @@
 package csc.team10.studentessentials;
 
+import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.view.Menu;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-//import android.widget.ProgressBar;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 
@@ -18,12 +23,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 public class LoginActivity extends Activity {
 	public Authentication authentication;
 	public Common common;
-
-	@Override
-	  public void onStart() {
-	    super.onStart();
-	    EasyTracker.getInstance(this).activityStart(this);
-	  }
 
 	  @Override
 	  public void onStop() {
@@ -39,64 +38,132 @@ public class LoginActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.hide();
         
+        //get authentication object, with shared saved preferences
         authentication = new Authentication(this);
         common = new Common(this);
         
-        if( authentication.isLoggedIn() )
-        	goToMainScreen();
-        	
-        
+        Log.d("Login Activity", "Setting login activity!");
         setContentView(R.layout.activity_login);
-        
-       
-        
     }
+    
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+		
+        EditText username = (EditText) findViewById(R.id.login_username);
+    	EditText password = (EditText) findViewById(R.id.login_password);
+    	
+    	Log.d("Login", authentication.getUsername());
+    	Log.d("Login", authentication.getPassword());
+    	Log.d("Login", authentication.getBase64Hash());		
+
+        //if we have previously generated the hash (in last session), then try logging in
+        if(!authentication.getBase64Hash().isEmpty())
+        {
+        	//set edit values to the saved ones
+        	username.setText(authentication.getUsername());
+	    	password.setText(authentication.getPassword());
+
+	    	new AuthTask(this).execute(authentication);
+        }
+	}
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.login, menu);
         return true;
-    }
+    }*/
     
     public void logMeIn(View view){
-    	EditText usernameEdit = (EditText) findViewById(R.id.login_username);
-    	EditText passwordEdit = (EditText) findViewById(R.id.login_password);
-    	
-    	boolean gotUserData = false;
+    	EditText username = (EditText) findViewById(R.id.login_username);
+    	EditText password = (EditText) findViewById(R.id.login_password);
     	
     	try{
-        	authentication.setUsername(usernameEdit.getText().toString());
-        	authentication.setPassword(passwordEdit.getText().toString());
+    		//check user input
+        	authentication.setUsername(username.getText().toString());
+        	authentication.setPassword(password.getText().toString());
         	
-        	gotUserData = true;
     	} catch(AuthenticationException e){
+    		//show toast if invalid and return
     		common.showLongToast(e.getMessage());
+    		return;
     	}
     	
-    	if(gotUserData)
+		//try logging in and check that we are logged in
+    	new AuthTask(this).execute(authentication);
+    }
+    
+    private class AuthTask extends AsyncTask<Authentication, Void, Boolean> {
+    	
+    	public AuthTask(Context context)
     	{
-    		try{
-    			authentication.authenticate();
-    		} catch(AuthenticationException e){
-    			common.showLongToast(e.getMessage());
-    		}
+    		//this.context = context.getApplicationContext();
     	}
     	
-    	if(!authentication.isLoggedIn())
+    	protected void onPreExecute()
     	{
-    		common.showLongToast("Could not log in. Check your Student ID and Password.");
-    	} else {
-    		goToMainScreen();
+           	ProgressBar progressBar = (ProgressBar) findViewById(R.id.login_progress);
+    		EditText username = (EditText) findViewById(R.id.login_username);
+        	EditText password = (EditText) findViewById(R.id.login_password);
+        	Button submit = (Button) findViewById(R.id.login_button);
+        	
+			username.setEnabled(false);
+			password.setEnabled(false);
+			submit.setEnabled(false);
+			
+			progressBar.setVisibility(View.VISIBLE);
     	}
+    	
+		protected Boolean doInBackground(Authentication... auths) {
 
-    	/*ProgressBar progressBar = (ProgressBar) findViewById(R.id.login_progress);
-    	progressBar.setVisibility(View.VISIBLE);*/
+			for(Authentication auth : auths)
+			{
+				try{
+					boolean r = auth.authenticate();
+					return Boolean.valueOf(r);
+				} catch (AuthenticationException e) {
+					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+					return Boolean.valueOf(false);
+				}
+			}
+
+			return Boolean.valueOf(false);
+		}
+		
+		protected void onPostExecute(Boolean result)
+		{
+			//super.onPostExecute(result);
+			
+			boolean r = result.booleanValue();
+			
+			if(r)
+			{
+				//context.startActivity(new Intent(context, MainActivity.class));
+				goToMainScreen();
+			} else {
+	           	ProgressBar progressBar = (ProgressBar) findViewById(R.id.login_progress);
+	    		EditText username = (EditText) findViewById(R.id.login_username);
+	        	EditText password = (EditText) findViewById(R.id.login_password);
+	        	Button submit = (Button) findViewById(R.id.login_button);
+	        	
+				username.setEnabled(true);
+				password.setEnabled(true);
+				submit.setEnabled(true);
+				
+				progressBar.setVisibility(View.GONE);
+				
+				Toast.makeText(getApplicationContext(), "Could not log in. Check your Student ID and Password.", Toast.LENGTH_SHORT).show();
+			}
+		}
     }
     
     public void goToMainScreen()
     {
+    	Log.d("LoginActivity", "Go to main screen!");
+    	
     	Intent intent = new Intent(this, MainActivity.class);
     	startActivity(intent);
     	finish();

@@ -4,15 +4,18 @@ import csc.team10.studentessentials.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -246,17 +249,59 @@ public class MainActivity extends Activity {
 
 	public static class Faq extends Fragment {
 
+		//Context context;
+		View faqView;
+		
 		public Faq() {
+			//this.context = context;
 			// Empty constructor required for fragment subclasses
 		}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-
-			return inflater.inflate(R.layout.fragment_faq, container, false);
-
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+		{
+			faqView = inflater.inflate(R.layout.fragment_faq, container, false);
+			//textView = (TextView) faq_view.findViewById(R.id.textView1);
+			return faqView;
 		}
+		
+		@Override
+		public void onStart()
+		{
+			super.onStart();
+			Connection con = new Connection("http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App/clubs/rtvvlF4Q", new Authentication(getActivity().getApplicationContext()));
+			new GetClub().execute(con);
+		}
+		
+	    private class GetClub extends AsyncTask<Connection, Void, String> {
+	    	final TextView textView = (TextView) faqView.findViewById(R.id.textView1);
+	    	
+			protected String doInBackground(Connection... cons) {
+				
+				
+				for(Connection con : cons)
+				{
+					try{
+						ConnectionResult result = con.get();
+						Log.d("ConnectionResult", result.getResponse());
+						return result.getResponse();
+						
+						//common.showShortToast("Status:" + result.getStatus());
+						//Toast.makeText(context, "Hello", Toast.LENGTH_LONG).show();
+						
+					} catch (ConnectionException e) {
+						//common.showShortToast(e.getMessage());
+					}
+				}
+				
+				return null;
+			}
+			
+			protected void onPostExecute(String result)
+			{
+				textView.setText(result);
+			}
+	    }
 	}
 
 	public static class Deals extends Fragment {

@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:contentDescription="University Logo"
+        android:contentDescription="@string/uni_logo_desc"
         android:paddingBottom="50dp"
         android:paddingTop="40dp"
         android:scaleType="center"
@@ -26,8 +26,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/login_username"
-            android:inputType="phone"
-            android:maxLength="9"
+            android:inputType="text"
+            android:maxLength="8"
              >
 
             <requestFocus />
@@ -53,11 +53,19 @@
             android:textColor="#ffffff"
             android:textSize="@dimen/activity_horizontal_margin" />
 
-        <ProgressBar
-            android:id="@+id/login_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ProgressBar
+                android:id="@+id/login_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:visibility="invisible" />
+
+        </LinearLayout>
 
 </LinearLayout>

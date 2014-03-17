@@ -5,6 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     
+    <string name="uni_logo_desc">University Logo</string>
+    
     
     <string name="login_info">Enter your ID &amp; Password</string>
     <string name="login_username">Student ID</string>

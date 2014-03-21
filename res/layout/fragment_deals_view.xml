@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="#f5f5fc" >
+
+    <ImageButton
+        android:id="@+id/vote_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:background="#f5f5fc"
+        android:src="@drawable/vote_up" />
+
+    <TextView
+        android:id="@+id/vote_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/vote_down"
+        android:layout_toRightOf="@+id/vote_up"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="12dp"
+        android:text="@string/deals_rating"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#269617"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/vote_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/vote_up"
+        android:layout_toRightOf="@+id/vote_score"
+        android:background="#f5f5fc"
+        android:src="@drawable/vote_down" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/deals_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#273e45"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2sdcv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="7dp"
+        android:background="#273e45"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/deals_info"
+        android:textColor="#c5c9b8"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/DealsDiscription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2sdcv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:text="@string/deals_description"
+        android:textColor="#273e45"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/vote_down"
+        android:paddingRight="20dp"
+        android:src="@drawable/icon_clothing" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <Button
+            android:id="@+id/DealsGoToUrl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:background="#122430"
+            android:text="@string/deals_gotoUrl"
+            android:textColor="#fffce2" />
+
+        <Button
+            android:id="@+id/DealsReport"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:background="#a40606"
+            android:text="@string/deals_report"
+            android:textColor="#fffce2" />
+    </LinearLayout>
+
+</RelativeLayout>

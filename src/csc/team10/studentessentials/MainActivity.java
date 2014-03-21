@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		common = new Common(this);
 		authentication = new Authentication(this);
 
@@ -99,10 +100,10 @@ public class MainActivity extends Activity {
 
 
 		// Sets the default fragment to 0 (news)
-		Fragment fragment1 = new Deals();
+		/*Fragment fragment1 = new Deals();
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment1).commit();
+				.replace(R.id.content_frame, fragment1).commit();*/
 		mDrawerList.setItemChecked(0, true);
 		setTitle(myStringArray[0]);
 
@@ -212,13 +213,13 @@ public class MainActivity extends Activity {
 					.replace(R.id.content_frame, fragment).commit();
 
 		} else if (position == 2) {
-			Fragment fragment = new Deals();
+			Fragment fragment = new DealsFragment();
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
 
 		} else {
-			Fragment fragment = new Deals();
+			Fragment fragment = new DealsFragment();
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
@@ -286,21 +287,4 @@ public class MainActivity extends Activity {
 			}, this.faqView);
 		}
 	}
-
-	public static class Deals extends Fragment {
-
-		public Deals() {
-			// Empty constructor required for fragment subclasses
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-
-			return inflater.inflate(R.layout.fragment_deals, container, false);
-
-		}
-
-	}
-
 }

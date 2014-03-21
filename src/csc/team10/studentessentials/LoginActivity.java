@@ -92,12 +92,11 @@ public class LoginActivity extends Activity {
     		return;
     	}
     	
-		//try logging in and check that we are logged in
+		//try logging in
     	new AuthTask(this).execute(authentication);
     }
     
     private class AuthTask extends AsyncTask<Authentication, Void, Boolean> {
-    	
     	public AuthTask(Context context)
     	{
     		//this.context = context.getApplicationContext();
@@ -125,8 +124,7 @@ public class LoginActivity extends Activity {
 					boolean r = auth.authenticate();
 					return Boolean.valueOf(r);
 				} catch (AuthenticationException e) {
-					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-					return Boolean.valueOf(false);
+					return false;
 				}
 			}
 
@@ -135,13 +133,10 @@ public class LoginActivity extends Activity {
 		
 		protected void onPostExecute(Boolean result)
 		{
-			//super.onPostExecute(result);
-			
 			boolean r = result.booleanValue();
 			
 			if(r)
 			{
-				//context.startActivity(new Intent(context, MainActivity.class));
 				goToMainScreen();
 			} else {
 	           	ProgressBar progressBar = (ProgressBar) findViewById(R.id.login_progress);

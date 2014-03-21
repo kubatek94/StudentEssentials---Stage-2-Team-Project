@@ -15,24 +15,24 @@ import android.util.Log;
 public class Connection
 {	
 	HttpURLConnection connection;
-	URL url;
+	URL baseUri;
 	
 	String hash = "";
 	Authentication auth = null;
 	
-	public Connection(String uri)
+	public Connection(String baseUri)
 	{
 		try {
-			url = new URL(uri);
+			this.baseUri = new URL(baseUri);
 		} catch (MalformedURLException e) {
 			throw new ConnectionException(e.getMessage());
 		}
 	}
 	
-	public Connection(String uri, Authentication auth)
+	public Connection(String baseUri, Authentication auth)
 	{
 		try {
-			url = new URL(uri);
+			this.baseUri = new URL(baseUri);
 		} catch (MalformedURLException e) {
 			throw new ConnectionException(e.getMessage());
 		}
@@ -62,13 +62,11 @@ public class Connection
 		byte[] response = null;
 		int status = 0;
 		
-		if(hash.isEmpty())
+		if(!hash.isEmpty())
 		{
-			throw new ConnectionException("Authentication credentials required!");
+			//set http auth
+			connection.setRequestProperty("Authorization", "Basic " + hash);
 		}
-		
-		//set http auth
-		connection.setRequestProperty("Authorization", "Basic " + hash);
 		
 		if(input != null)
 		{
@@ -93,7 +91,7 @@ public class Connection
 		                try {
 		                    out.close();
 		                } catch (IOException e) {
-		                    e.printStackTrace();
+		                	throw new ConnectionException(e.getMessage());
 		                }
 		            }
 				}
@@ -111,11 +109,16 @@ public class Connection
 			Log.d("Connection", "Status:" + status);
 			Log.d("Connection", "Length:" + length);
 			
-			if(length != -1)
+			if(length >= 0)
 			{
 				response = new byte[length];
 			} else {
 				response = new byte[1024*5]; //5 MB of data
+			}
+			
+			if(status == 401)
+			{
+				return new ConnectionResult(status, "Authentication Required!".getBytes());
 			}
 			
 			if(status != -1)
@@ -130,16 +133,38 @@ public class Connection
 			connection.disconnect();
 		} catch (IOException e) {
 			throw new ConnectionException(e.getLocalizedMessage());
-			//Log.d("Connection", "IOException:" + e.getLocalizedMessage());
 		}
 		
 		return null;
 	}
 	
-	public ConnectionResult post(JSONObject input)
+	public ConnectionResult execute(ConnectionMethod method, String url, JSONObject input)
+	{
+		switch(method)
+		{
+		case GET:
+			return this.get(url);
+			
+		case POST:
+			return this.post(url, input);
+			
+		case PUT:
+			return this.put(url, input);
+			
+		case DELETE:
+			return this.delete(url);
+			
+		default:
+			throw new ConnectionException("Invalid connection method!");
+		}
+	}
+	
+	public ConnectionResult post(String url, JSONObject input)
 	{
 		try {
-			connection = (HttpURLConnection) url.openConnection();
+			URL uri = new URL(baseUri.toString() + url);
+			
+			connection = (HttpURLConnection) uri.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			
@@ -153,10 +178,12 @@ public class Connection
 		}
 	}
 	
-	public ConnectionResult get()
+	public ConnectionResult get(String url)
 	{	
 		try {
-			connection = (HttpURLConnection) url.openConnection();
+			URL uri = new URL(baseUri.toString() + url);
+			
+			connection = (HttpURLConnection) uri.openConnection();
 			connection.setRequestMethod("GET");
 			
 			ConnectionResult cr = request(null);
@@ -169,10 +196,12 @@ public class Connection
 		}
 	}
 	
-	public ConnectionResult put(JSONObject input)
+	public ConnectionResult put(String url, JSONObject input)
 	{
 		try {
-			connection = (HttpURLConnection) url.openConnection();
+			URL uri = new URL(baseUri.toString() + url);
+			
+			connection = (HttpURLConnection) uri.openConnection();
 			connection.setRequestMethod("PUT");
 			connection.setRequestProperty("Content-Type", "application/json");
 			
@@ -186,10 +215,12 @@ public class Connection
 		}
 	}
 	
-	public ConnectionResult delete()
+	public ConnectionResult delete(String url)
 	{
 		try {
-			connection = (HttpURLConnection) url.openConnection();
+			URL uri = new URL(baseUri.toString() + url);
+			
+			connection = (HttpURLConnection) uri.openConnection();
 			connection.setRequestMethod("DELETE");
 			
 			ConnectionResult cr = request(null);

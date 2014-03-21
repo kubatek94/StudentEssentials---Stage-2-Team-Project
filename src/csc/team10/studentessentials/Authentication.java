@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class Authentication {
 	private static final String SHARED_PREFERENCES_NAME = "AUTH_PREF"; //name to use for shared preferences file
-	private static final String AUTH_URL = "http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App/login";
+	private static final String AUTH_URL = "http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App";
 	
 	private SharedPreferences state;
 	
@@ -29,10 +29,10 @@ public class Authentication {
 	
 	public Authentication(Context context)
 	{
-		connection = new Connection(AUTH_URL);
-		
 		state = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
 		loadState();
+		
+		connection = new Connection(AUTH_URL, this);
 	}
 	
 	private void loadState()
@@ -125,7 +125,7 @@ public class Authentication {
 		} catch (UnsupportedEncodingException e) {
 			Log.d("Authentication", e.getLocalizedMessage());
 		}
-		
+
 		boolean a = auth();
 		setLoggedIn(a);
 		
@@ -145,7 +145,7 @@ public class Authentication {
 		connection.setHash(base64Hash);
 		
 		try{
-			ConnectionResult result = connection.get();
+			ConnectionResult result = connection.get("/login");
 			
 			switch(result.getStatus())
 			{

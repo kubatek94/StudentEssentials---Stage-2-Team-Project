@@ -269,39 +269,22 @@ public class MainActivity extends Activity {
 		public void onStart()
 		{
 			super.onStart();
-			Connection con = new Connection("http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App/clubs/rtvvlF4Q", new Authentication(getActivity().getApplicationContext()));
-			new GetClub().execute(con);
-		}
-		
-	    private class GetClub extends AsyncTask<Connection, Void, String> {
-	    	final TextView textView = (TextView) faqView.findViewById(R.id.textView1);
-	    	
-			protected String doInBackground(Connection... cons) {
-				
-				
-				for(Connection con : cons)
-				{
-					try{
-						ConnectionResult result = con.get();
-						Log.d("ConnectionResult", result.getResponse());
-						return result.getResponse();
-						
-						//common.showShortToast("Status:" + result.getStatus());
-						//Toast.makeText(context, "Hello", Toast.LENGTH_LONG).show();
-						
-					} catch (ConnectionException e) {
-						//common.showShortToast(e.getMessage());
-					}
+			
+			AsyncConnection con = new AsyncConnection("http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App", new Authentication(getActivity().getApplicationContext()));
+			
+			con.get("/clubs/rtvvlF4Q", new AsyncConnectionCallback()
+			{
+				public void onSuccess(Object callbackContext, ConnectionResult result) {
+					View faq = (View)callbackContext;
+					TextView textView = (TextView) faq.findViewById(R.id.textView1);
+					textView.setText(result.getResponse());
+				}
+				public void onError(Object callbackContext, ConnectionException exception) {
+					
 				}
 				
-				return null;
-			}
-			
-			protected void onPostExecute(String result)
-			{
-				textView.setText(result);
-			}
-	    }
+			}, this.faqView);
+		}
 	}
 
 	public static class Deals extends Fragment {

@@ -52,19 +52,19 @@ public class MainActivity extends Activity {
 				R.layout.drawer_list_item, myStringArray);
 		mDrawerList.setAdapter(adapter);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		
+
 		// set up the drawer's list view with items and click listener
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, myStringArray));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		
-		
-		
-	
-		
-		
-		
+
+
+
+
+
+
+
 
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
                 
 			}
 		};
-		
+
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -94,10 +94,10 @@ public class MainActivity extends Activity {
 		common.showShortToast(authentication.isLoggedIn() ? "Logged In"
 				: "Logged Out");
 		common.showShortToast(authentication.getUsername());
-		
-		
-		
-		
+
+
+
+
 		// Sets the default fragment to 0 (news)
 		Fragment fragment1 = new Deals();
 		FragmentManager fragmentManager = getFragmentManager();
@@ -105,10 +105,10 @@ public class MainActivity extends Activity {
 				.replace(R.id.content_frame, fragment1).commit();
 		mDrawerList.setItemChecked(0, true);
 		setTitle(myStringArray[0]);
-		
-		
+
+
 	}
-	
+
 	@Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -143,19 +143,19 @@ public class MainActivity extends Activity {
 		finish();
 	}
 
-	
+
 
 
 	    /* Called whenever we call invalidateOptionsMenu() */
 	    @Override
 	    public boolean onPrepareOptionsMenu(Menu menu) {
 	        // If the nav drawer is open, hide action items related to the content view
-	       
+
 
 	        return super.onPrepareOptionsMenu(menu);
 	    }
-	    
-	    
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
@@ -164,7 +164,7 @@ public class MainActivity extends Activity {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 	          return true;
 	        }
-		
+
 		switch (item.getItemId()) {
 		case R.id.button_logout:
 			logMeOut(this.getCurrentFocus());
@@ -251,7 +251,7 @@ public class MainActivity extends Activity {
 
 		//Context context;
 		View faqView;
-		
+
 		public Faq() {
 			//this.context = context;
 			// Empty constructor required for fragment subclasses
@@ -264,14 +264,14 @@ public class MainActivity extends Activity {
 			//textView = (TextView) faq_view.findViewById(R.id.textView1);
 			return faqView;
 		}
-		
+
 		@Override
 		public void onStart()
 		{
 			super.onStart();
-			
+
 			AsyncConnection con = new AsyncConnection("http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App", new Authentication(getActivity().getApplicationContext()));
-			
+
 			con.get("/clubs/rtvvlF4Q", new AsyncConnectionCallback()
 			{
 				public void onSuccess(Object callbackContext, ConnectionResult result) {
@@ -280,9 +280,9 @@ public class MainActivity extends Activity {
 					textView.setText(result.getResponse());
 				}
 				public void onError(Object callbackContext, ConnectionException exception) {
-					
+
 				}
-				
+
 			}, this.faqView);
 		}
 	}
@@ -304,6 +304,3 @@ public class MainActivity extends Activity {
 	}
 
 }
-
-
-

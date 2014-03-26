@@ -14,7 +14,7 @@ android:orientation="vertical"
                  android:layout_weight="0.2" >
 
                  <ImageView
-                     android:id="@+id/imageView1"
+                     android:id="@+id/deal_image"
                      android:layout_width="200dp"
                      android:layout_height="match_parent"
                      android:layout_margin="10dp"
@@ -63,7 +63,7 @@ android:orientation="vertical"
                          android:fontFamily="sans-serif-light" />
 
                      <TextView
-                         android:id="@+id/textView2"
+                         android:id="@+id/deal_title"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
                          android:text="Student No: 125689524"

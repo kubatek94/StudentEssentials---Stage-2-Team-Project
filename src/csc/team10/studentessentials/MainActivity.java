@@ -89,13 +89,6 @@ public class MainActivity extends Activity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-        
-
-
-		common.showShortToast(authentication.isLoggedIn() ? "Logged In"
-				: "Logged Out");
-		common.showShortToast(authentication.getUsername());
-
 
 
 
@@ -216,7 +209,7 @@ public class MainActivity extends Activity {
 			Fragment fragment = new DealsFragment();
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+					.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 
 		} else {
 			Fragment fragment = new DealsFragment();

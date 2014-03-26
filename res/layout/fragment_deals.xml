@@ -1,20 +1,50 @@
-<android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/deals_pane"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
-    <!-- Left side pane. (Master) -->
-    <fragment android:id="@+id/deals_list_fragment"
-              android:name="csc.team10.studentessentials.DealsListFragment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="left"  />
-    
-    <!-- Right side page. (Slave)  -->
-    <fragment android:id="@+id/deal_view_fragment"
-              android:name="csc.team10.studentessentials.DealViewFragment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="right"
-              android:layout_weight="1"		/>
-</android.support.v4.widget.SlidingPaneLayout>
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/deal_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="top" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="#5c5c5c"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/action_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.33"
+            android:background="#122430"
+            android:src="@drawable/action_submit" />
+
+        <ImageButton
+            android:id="@+id/action_categories"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="0.33"
+            android:background="#122430"
+            android:src="@drawable/action_categories" />
+
+        <ImageButton
+            android:id="@+id/action_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.33"
+            android:background="#122430"
+            android:src="@drawable/action_settings" />
+    </LinearLayout>
+
+</LinearLayout>

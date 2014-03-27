@@ -3,8 +3,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:rotation="270" >
 
+    android:background="@drawable/scardbg" >
+
+    
+    <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:rotation="270">
+    
+        
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,22 +22,13 @@
 
         <ImageView
             android:id="@+id/deal_image"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
+            android:layout_width="192dp"
+            android:layout_height="236dp"
             android:layout_margin="10dp"
-            android:layout_weight="1"
+            
             android:src="@drawable/logo" />
 
-        <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:paddingBottom="30dp"
-            android:paddingLeft="30dp"
-            android:paddingTop="20dp"
-            android:src="@drawable/student" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -38,11 +38,10 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="130dp"
+            android:layout_height="284dp"
             android:layout_gravity="fill"
             android:layout_margin="20dp"
-            android:layout_weight="1"
             android:src="@drawable/student_pic" />
 
         <LinearLayout
@@ -74,7 +73,8 @@
                 android:fontFamily="sans-serif-light"
                 android:text="Card Expiry: 30.09.16"
                 android:textSize="25sp" />
+
         </LinearLayout>
     </LinearLayout>
-
+</LinearLayout>
 </LinearLayout>

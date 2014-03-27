@@ -1,18 +1,13 @@
 package csc.team10.studentessentials;
 
-import java.util.List;
-
 import csc.team10.studentessentials.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
-import csc.team10.RssHandling.*;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +28,6 @@ import android.view.MenuInflater;
 public class MainActivity extends Activity {
 	private ListView mDrawerList;
 	private DrawerLayout mDrawerLayout;
-	private MainActivity local;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private String[] myStringArray = { "News", "Smart Card", "Deals & Discounts", "Student Nights Out", "FAQ" };
 
@@ -49,7 +43,6 @@ public class MainActivity extends Activity {
 		
 		common = new Common(this);
 		authentication = new Authentication(this);
-		local = this;
 
 		// drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -294,70 +287,5 @@ public class MainActivity extends Activity {
 
 			}, this.faqView);
 		}
-	}
-	
-	public class RssFragment extends Fragment
-	{
-		public RssFragment()
-		{
-			// Empty constructor required for fragment subclasses
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			View inflate = inflater.inflate(R.layout.rss_layout, container, false);	
-
-			// Start the RSSTask
-			RSSTask task = new RSSTask();		
-			// Set the input stream for the rss feed and execute.
-			task.execute("http://www.ncl.ac.uk/news/rss.xml?a=pressreleases");
-			return inflate;
-		}
-		private class RSSTask extends AsyncTask<String, Void, List<RssItem> >
-		{
-			/* 											 	  *
-			 * This method runs in the background (Async) and *
-			 * grabs the RssItems					          *
-			 * 											 	  */	
-			@Override
-			protected List<RssItem> doInBackground(String... url)
-			{
-				try
-				{
-					// Initialise a new Reader with the input url.
-					Reader reader = new Reader(url[0]);
-					// Return a list of RssItems.
-					return reader.getItems();
-
-				}catch(Exception e)
-				{
-
-				}			
-				return null;
-			}
-
-			/* 										   *
-			 * Method that controls the display of the *
-			 * List of RssItems.				       *
-			 * 										   */	
-			@Override
-			protected void onPostExecute(List<RssItem> result)
-			{
-				// Find the ListView element in the layout.xml file.
-				ListView items = (ListView) findViewById(R.id.rssListMainView);
-
-				// Create a list adapter, and feed in the List of RssItems
-				ArrayAdapter<RssItem> adapter = new ArrayAdapter<RssItem>(local ,android.R.layout.simple_list_item_1, result);
-
-				// Set the adapter for the selected view.
-				items.setAdapter(adapter);
-
-				// Initialise the ClickListener that sends the user to the link of the RssItem they clicked.
-				items.setOnItemClickListener(new ListListener(result, local));
-			}	
-		}
-
-
 	}
 }

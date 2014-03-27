@@ -89,10 +89,10 @@ public class MainActivity extends Activity
         getActionBar().setHomeButtonEnabled(true);
 
 		// Sets the default fragment to 0 (news)
-		/*Fragment fragment1 = new Deals();
+		Fragment fragment1 = new RssFragment();
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment1).commit();*/
+				.replace(R.id.content_frame, fragment1).commit();
 		mDrawerList.setItemChecked(0, true);
 		setTitle(myStringArray[0]);
 	}
@@ -197,9 +197,6 @@ public class MainActivity extends Activity
 		// update the main content by replacing fragments
 		
 		if (position == 0) {
-			
-//			Intent i = new Intent(this, RssActivity.class);
-//			startActivity(i);			
 			Fragment fragment1 = new RssFragment();
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()

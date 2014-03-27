@@ -3,7 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+    <!-- progressbar layout -->
 
+   	<LinearLayout
+   	    android:id="@+id/deal_list_loading"
+   	    android:layout_width="match_parent"
+   	    android:layout_height="0dp"
+   	    android:layout_gravity="center"
+   	    android:layout_weight="1"
+   	    android:orientation="vertical"
+   	    android:visibility="gone" >
+
+   		<ProgressBar
+   		    android:id="@+id/deal_list_loading_progressbar"
+   		    style="?android:attr/progressBarStyleLarge"
+   		    android:layout_width="wrap_content"
+   		    android:layout_height="fill_parent"
+   		    android:layout_gravity="center"
+   		    android:indeterminate="true" />
+
+    </LinearLayout>
+    
     <ListView
         android:id="@+id/deal_list"
         android:layout_width="match_parent"

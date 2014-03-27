@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DealViewFragment extends Fragment
 {
@@ -80,7 +79,7 @@ public class DealViewFragment extends Fragment
 		ImageButton voteDown = (ImageButton) v.findViewById(R.id.vote_down);
 		
 		Button goToUrl = (Button) v.findViewById(R.id.deal_go_to_url);
-		Button report = (Button) v.findViewById(R.id.deal_report);
+		//Button report = (Button) v.findViewById(R.id.deal_report);
 		
 		voteUp.setOnClickListener(new View.OnClickListener() {
 			@Override

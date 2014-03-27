@@ -1,13 +1,9 @@
 package csc.team10.studentessentials;
 
-import java.util.List;
-
 import csc.team10.studentessentials.R;
-import csc.team10.RssHandling.*;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,29 +25,24 @@ import android.content.res.Configuration;
 import android.view.MenuInflater;
 
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
 	private ListView mDrawerList;
-	private MainActivity local;
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private String[] myStringArray = { "News", "Smart Card", "Student Deals",
-			"Student Discounts", "Student Nights Out", "FAQ" };
+	private String[] myStringArray = { "News", "Smart Card", "Deals & Discounts", "Student Nights Out", "FAQ" };
 
 	public Authentication authentication;
 	public Common common;
 
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		common = new Common(this);
 		authentication = new Authentication(this);
-		local = this;
 
 		// drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -65,22 +56,30 @@ public class MainActivity extends Activity
 				R.layout.drawer_list_item, myStringArray));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+
+
+
+
+
+
+
+
+
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		mDrawerLayout, /* DrawerLayout object */
 		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
 		R.string.drawer_open, /* "open drawer" description for accessibility */
 		R.string.drawer_close /* "close drawer" description for accessibility */
-		) 
-		{
-			public void onDrawerClosed(View view) 
-			{
+		) {
+			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
-                // onPrepareOptionsMenu()
+                
+											// onPrepareOptionsMenu()
 			}
 
-			public void onDrawerOpened(View drawerView) 
-			{
-				super.onDrawerOpened(drawerView);    
+			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);
+                
 			}
 		};
 
@@ -88,149 +87,150 @@ public class MainActivity extends Activity
 		getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
+
+
 		// Sets the default fragment to 0 (news)
-		Fragment fragment1 = new RssFragment();
+		/*Fragment fragment1 = new Deals();
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment1).commit();
+				.replace(R.id.content_frame, fragment1).commit();*/
 		mDrawerList.setItemChecked(0, true);
 		setTitle(myStringArray[0]);
+
+
 	}
 
 	@Override
-    protected void onPostCreate(Bundle savedInstanceState) 
-	{
+    protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) 
-    {
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
     
+
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
 	}
 
-	public void logMeOut(View view)
-	{
+	public void logMeOut(View view) {
 		authentication.reset();
 		common.showShortToast(authentication.isLoggedIn() ? "Logged In"
 				: "Logged Out");
 		goToLoginScreen();
 	}
 
-	public void goToLoginScreen()
-	{
+	public void goToLoginScreen() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 		finish();
 	}
 
-	/* Called whenever we call invalidateOptionsMenu() */
+
+
+
+	    /* Called whenever we call invalidateOptionsMenu() */
 	    @Override
-	    public boolean onPrepareOptionsMenu(Menu menu) 
-	    {
+	    public boolean onPrepareOptionsMenu(Menu menu) {
 	        // If the nav drawer is open, hide action items related to the content view
 
 
 	        return super.onPrepareOptionsMenu(menu);
 	    }
-	    
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) 
-	{
-		// Handle presses on the action bar items
-		if (mDrawerToggle.onOptionsItemSelected(item)) 
-		{
-			return true;
-	    }
 
-		switch (item.getItemId()) 
-		{
-		case R.id.button_logout: 
-			
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+
+
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+	          return true;
+	        }
+
+		switch (item.getItemId()) {
+		case R.id.button_logout:
 			logMeOut(this.getCurrentFocus());
 			return true;
 		default:
-			
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
 	@Override
-	public void onStart() 
-	{
+	public void onStart() {
 		super.onStart();
 		EasyTracker.getInstance(this).activityStart(this);
 	}
 
 	@Override
-	public void onStop()
-	{
+	public void onStop() {
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	/* The click listner for ListView in the navigation drawer */
 	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener 
-	{
+			ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id)
-		{
+				long id) {
 			selectItem(position);
 		}
 	}
 
-	private void selectItem(int position)
-	{
+	private void selectItem(int position) {
 		// update the main content by replacing fragments
+		Fragment fragment = null;
 		
-		if (position == 0) {
-			Fragment fragment1 = new RssFragment();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment1).commit();
-		} else if (position == 1) {
-			Fragment fragment1 = new Smartcard();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment1).commit();
-
-		} else if (position == 2) {
-			Fragment fragment = new DealsFragment();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
-			
-		} else if (position == 5) {
-			Fragment fragment = new Faq();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-			
-		} else {
-			Fragment fragment = new DealsFragment();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-
+		switch(position)
+		{
+			case 0: //news
+				//load news fragment
+				fragment = new RssFragment();
+			break;
+				
+			case 1: //smart card
+				fragment = new Smartcard();
+			break;
+				
+			case 2: //deals & discounts
+				fragment = new DealsDiscountsFragment();
+			break;
+				
+			case 3: //student nights out
+			break;
+				
+			case 4: //faq
+				fragment = new Faq();
+			break;
+				
+			default:
+				break;
 		}
-
-		// update selected item and title, then close the drawer
-		mDrawerList.setItemChecked(position, true);
-		setTitle(myStringArray[position]);
-		mDrawerLayout.closeDrawer(mDrawerList);
+		
+		if(fragment != null)
+		{
+			//load selected fragment
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment)
+					.addToBackStack(null)
+					.commit();
+			
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+			setTitle(myStringArray[position]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+		}
 	}
 
 	public static class Smartcard extends Fragment {
@@ -287,69 +287,5 @@ public class MainActivity extends Activity
 
 			}, this.faqView);
 		}
-	}
-	public class RssFragment extends Fragment
-	{
-		public RssFragment()
-		{
-			// Empty constructor required for fragment subclasses
-		}
-		
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			View inflate = inflater.inflate(R.layout.rss_layout, container, false);	
-			
-			// Start the RSSTask
-			RSSTask task = new RSSTask();		
-			// Set the input stream for the rss feed and execute.
-			task.execute("http://www.ncl.ac.uk/news/rss.xml?a=pressreleases");
-			return inflate;
-		}
-		private class RSSTask extends AsyncTask<String, Void, List<RssItem> >
-		{
-			/* 											 	  *
-			 * This method runs in the background (Async) and *
-			 * grabs the RssItems					          *
-			 * 											 	  */	
-			@Override
-			protected List<RssItem> doInBackground(String... url)
-			{
-				try
-				{
-					// Initialise a new Reader with the input url.
-					Reader reader = new Reader(url[0]);
-					// Return a list of RssItems.
-					return reader.getItems();
-					
-				}catch(Exception e)
-				{
-				
-				}			
-				return null;
-			}
-			
-			/* 										   *
-			 * Method that controls the display of the *
-			 * List of RssItems.				       *
-			 * 										   */	
-			@Override
-			protected void onPostExecute(List<RssItem> result)
-			{
-				// Find the ListView element in the layout.xml file.
-				ListView items = (ListView) findViewById(R.id.rssListMainView);
-							
-				// Create a list adapter, and feed in the List of RssItems
-				ArrayAdapter<RssItem> adapter = new ArrayAdapter<RssItem>(local ,android.R.layout.simple_list_item_1, result);
-				
-				// Set the adapter for the selected view.
-				items.setAdapter(adapter);
-				
-				// Initialise the ClickListener that sends the user to the link of the RssItem they clicked.
-				items.setOnItemClickListener(new ListListener(result, local));
-			}	
-		}
-		
-		
 	}
 }

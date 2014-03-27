@@ -1,75 +1,87 @@
 package csc.team10.studentessentials;
 
-import android.app.DialogFragment;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 public class DealsCategoryDialog extends DialogFragment
 {
+	List<ImageButton> categories = null;
+	
+	List<CategoryCallback> callbacks = new ArrayList<CategoryCallback>();
+	List<Object> callbackContexts = new ArrayList<Object>();
+	
+    public DealsCategoryDialog()
+    {
 
-    int mNum;
-
-    /**
-     * Create a new instance of MyDialogFragment, providing "num"
-     * as an argument.
-     */
-    static DealsCategoryDialog newInstance(int num) {
-    	DealsCategoryDialog f = new DealsCategoryDialog();
-
-        // Supply num input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("num", num);
-        f.setArguments(args);
-
-        return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNum = getArguments().getInt("num");
 
-        // Pick a style based on the num.
-        int style = DialogFragment.STYLE_NORMAL, theme = 0;
-        switch ((mNum-1)%6) {
-            case 1: style = DialogFragment.STYLE_NO_TITLE; break;
-            case 2: style = DialogFragment.STYLE_NO_FRAME; break;
-            case 3: style = DialogFragment.STYLE_NO_INPUT; break;
-            case 4: style = DialogFragment.STYLE_NORMAL; break;
-            case 5: style = DialogFragment.STYLE_NORMAL; break;
-            case 6: style = DialogFragment.STYLE_NO_TITLE; break;
-            case 7: style = DialogFragment.STYLE_NO_FRAME; break;
-            case 8: style = DialogFragment.STYLE_NORMAL; break;
-        }
-        switch ((mNum-1)%6) {
-            case 4: theme = android.R.style.Theme_Holo; break;
-            case 5: theme = android.R.style.Theme_Holo_Light_Dialog; break;
-            case 6: theme = android.R.style.Theme_Holo_Light; break;
-            case 7: theme = android.R.style.Theme_Holo_Light_Panel; break;
-            case 8: theme = android.R.style.Theme_Holo_Light; break;
-        }
-        setStyle(style, theme);
+        setStyle(DialogFragment.STYLE_NORMAL, 0);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_deals_categories, container, false);
-        
-        Common common = new Common(getActivity());
-        common.showShortToast("Dialog #" + mNum);
-
-        // Watch for button clicks.
-        /*Button button = (Button)v.findViewById(R.id.show);
-        button.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                // When button is clicked, call up to owning activity.
-                ((FragmentDialog)getActivity()).showDialog();
-            }
-        });*/
-
-        return v;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    	getDialog().setTitle("Choose deal category:");
+        return inflater.inflate(R.layout.fragment_deals_categories, container, false);
+    }
+    
+    public void addCategoryCallback(CategoryCallback callback, Object callbackContext)
+    {
+    	callbacks.add(callback);
+    	callbackContexts.add(callbackContext);
+    }
+    
+    public void onStart()
+    {
+    	super.onStart();
+    	
+    	categories = new ArrayList<ImageButton>();
+    	
+		View v = getView();
+		
+		if (v == null)
+		{
+	        LayoutInflater vi;
+	        vi = LayoutInflater.from(this.getActivity());
+	        v = vi.inflate(R.layout.fragment_deals_categories, null);
+	    }
+    	
+		categories.add( (ImageButton) v.findViewById(R.id.category_clothing) );
+		categories.add( (ImageButton) v.findViewById(R.id.category_groceries) );
+		categories.add( (ImageButton) v.findViewById(R.id.category_restaurants) );
+		categories.add( (ImageButton) v.findViewById(R.id.category_gaming) );
+		categories.add( (ImageButton) v.findViewById(R.id.category_electronics) );
+		categories.add( (ImageButton) v.findViewById(R.id.category_books) );
+		categories.add( (ImageButton) v.findViewById(R.id.category_travel) );
+		categories.add( (ImageButton) v.findViewById(R.id.category_mobiles) );
+		categories.add( (ImageButton) v.findViewById(R.id.category_other) );
+    	
+    	for(ImageButton category : categories)
+    	{
+    		category.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					ImageButton category = (ImageButton)v;
+					int index =  1 + categories.indexOf(category);
+					
+					for(int i = 0; i < callbacks.size(); i++)
+					{
+						CategoryCallback callback = callbacks.get(i);
+						Object callbackContext = callbackContexts.get(i);
+						
+						callback.onSelect(callbackContext, index);
+					}
+				}
+    		});
+    	}		
     }
 }

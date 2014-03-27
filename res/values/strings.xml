@@ -17,6 +17,20 @@
     <string name="title_activity_main">Main</string>
     <string name="button_logout">Logout</string>
     
+    
+    <string-array name="deal_categories">
+        <item>Choose category</item>
+        <item>Clothing</item>
+        <item>Groceries</item>
+        <item>Restaurants</item>
+        <item>Gaming</item>
+        <item>Electronics</item>
+        <item>Books</item>
+        <item>Travel</item>
+        <item>Mobiles</item>
+        <item>Other</item>
+    </string-array>
+    
     <string-array name="planets_array">
         <item>Mercury</item>
         <item>Venus</item>

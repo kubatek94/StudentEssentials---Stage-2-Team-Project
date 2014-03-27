@@ -1,9 +1,12 @@
 package csc.team10.studentessentials;
 
+import java.util.List;
+
 import csc.team10.studentessentials.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import csc.team10.RssHandling.*;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -30,9 +33,9 @@ import android.view.MenuInflater;
 public class MainActivity extends Activity {
 	private ListView mDrawerList;
 	private DrawerLayout mDrawerLayout;
+	private MainActivity local;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private String[] myStringArray = { "News", "Smart Card", "Student Deals",
-			"Student Discounts", "Student Nights Out", "FAQ" };
+	private String[] myStringArray = { "News", "Smart Card", "Deals & Discounts", "Student Nights Out", "FAQ" };
 
 	public Authentication authentication;
 	public Common common;
@@ -46,6 +49,7 @@ public class MainActivity extends Activity {
 		
 		common = new Common(this);
 		authentication = new Authentication(this);
+		local = this;
 
 		// drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -192,37 +196,48 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
-
-		if (position == 1) {
-			Fragment fragment1 = new Smartcard();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment1).commit();
-
-		} else if (position == 5) {
-			Fragment fragment = new Faq();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-
-		} else if (position == 2) {
-			Fragment fragment = new DealsFragment();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
-
-		} else {
-			Fragment fragment = new DealsFragment();
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-
+		Fragment fragment = null;
+		
+		switch(position)
+		{
+			case 0: //news
+				//load news fragment
+				fragment = new RssFragment();
+			break;
+				
+			case 1: //smart card
+				fragment = new Smartcard();
+			break;
+				
+			case 2: //deals & discounts
+				fragment = new DealsDiscountsFragment();
+			break;
+				
+			case 3: //student nights out
+			break;
+				
+			case 4: //faq
+				fragment = new Faq();
+			break;
+				
+			default:
+				break;
 		}
-
-		// update selected item and title, then close the drawer
-		mDrawerList.setItemChecked(position, true);
-		setTitle(myStringArray[position]);
-		mDrawerLayout.closeDrawer(mDrawerList);
+		
+		if(fragment != null)
+		{
+			//load selected fragment
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment)
+					.addToBackStack(null)
+					.commit();
+			
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+			setTitle(myStringArray[position]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+		}
 	}
 
 	public static class Smartcard extends Fragment {
@@ -279,5 +294,70 @@ public class MainActivity extends Activity {
 
 			}, this.faqView);
 		}
+	}
+	
+	public class RssFragment extends Fragment
+	{
+		public RssFragment()
+		{
+			// Empty constructor required for fragment subclasses
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+		{
+			View inflate = inflater.inflate(R.layout.rss_layout, container, false);	
+
+			// Start the RSSTask
+			RSSTask task = new RSSTask();		
+			// Set the input stream for the rss feed and execute.
+			task.execute("http://www.ncl.ac.uk/news/rss.xml?a=pressreleases");
+			return inflate;
+		}
+		private class RSSTask extends AsyncTask<String, Void, List<RssItem> >
+		{
+			/* 											 	  *
+			 * This method runs in the background (Async) and *
+			 * grabs the RssItems					          *
+			 * 											 	  */	
+			@Override
+			protected List<RssItem> doInBackground(String... url)
+			{
+				try
+				{
+					// Initialise a new Reader with the input url.
+					Reader reader = new Reader(url[0]);
+					// Return a list of RssItems.
+					return reader.getItems();
+
+				}catch(Exception e)
+				{
+
+				}			
+				return null;
+			}
+
+			/* 										   *
+			 * Method that controls the display of the *
+			 * List of RssItems.				       *
+			 * 										   */	
+			@Override
+			protected void onPostExecute(List<RssItem> result)
+			{
+				// Find the ListView element in the layout.xml file.
+				ListView items = (ListView) findViewById(R.id.rssListMainView);
+
+				// Create a list adapter, and feed in the List of RssItems
+				ArrayAdapter<RssItem> adapter = new ArrayAdapter<RssItem>(local ,android.R.layout.simple_list_item_1, result);
+
+				// Set the adapter for the selected view.
+				items.setAdapter(adapter);
+
+				// Initialise the ClickListener that sends the user to the link of the RssItem they clicked.
+				items.setOnItemClickListener(new ListListener(result, local));
+			}	
+		}
+
+
 	}
 }

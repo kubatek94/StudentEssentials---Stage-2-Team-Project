@@ -8,6 +8,9 @@ package csc.team10.studentessentials;
 
 import java.io.UnsupportedEncodingException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
@@ -21,6 +24,7 @@ public class Authentication {
 	
 	private boolean loggedIn = false;
 	
+	private String studentNumber = ""; //currently logged in student number
 	private String username = "";
 	private String password = "";
 	private String base64Hash = "";
@@ -42,6 +46,7 @@ public class Authentication {
 		username = state.getString("username", "");
 		password = state.getString("password", "");
 		base64Hash = state.getString("base64Hash", "");
+		studentNumber = state.getString("studentNumber", "");
 	}
 	
 	private void saveState()
@@ -54,6 +59,7 @@ public class Authentication {
 		editor.putString("password", password);
 		
 		editor.putString("base64Hash", base64Hash);
+		editor.putString("studentNumber", studentNumber);
 		
 		editor.commit();
 	}
@@ -72,6 +78,11 @@ public class Authentication {
 			throw new AuthenticationException("Password required");
 		
 		this.password = password;
+	}
+	
+	public String getStudentNumber()
+	{
+		return studentNumber;
 	}
 	
 	public String getUsername()
@@ -153,13 +164,16 @@ public class Authentication {
 				Log.e("Authentication", "Status not set!");
 				return false;
 			case 200:
-				String response = result.getResponse();
+				JSONObject r = new JSONObject(result.getResponse());
 				
-				if(response.equals("LOGIN_OK"))
+				if(r.optString("status", "").equalsIgnoreCase("success"))
 				{
+					JSONObject data = r.optJSONObject("data");
+					
+					studentNumber = data.optString("number", ""); //save student number from response
 					return true;
 				} else {
-					Log.d("Authentication response", response);
+					Log.d("Authentication response", r.toString(2));
 					return false;
 				}
 			case 401:
@@ -171,6 +185,9 @@ public class Authentication {
 			}
 		} catch (ConnectionException e) {
 			Log.e("Authentication", e.getMessage());
+			return false;
+		} catch (JSONException e) {
+			Log.e("AuthenticationJSON", e.getMessage());
 			return false;
 		}
 	}

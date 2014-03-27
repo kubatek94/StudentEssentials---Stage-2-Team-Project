@@ -68,6 +68,8 @@ public class Connection
 			connection.setRequestProperty("Authorization", "Basic " + hash);
 		}
 		
+		connection.setDoInput(true);
+		
 		if(input != null)
 		{
 			String inputString = input.toString();
@@ -99,9 +101,8 @@ public class Connection
 		}
 		
 		try {
-			connection.setDoInput(true);
-			connection.setConnectTimeout(5000);
-			connection.connect();
+			//connection.setConnectTimeout(5000);
+			//connection.connect();
 			
 			status = connection.getResponseCode();
 			int length = connection.getContentLength();
@@ -154,6 +155,9 @@ public class Connection
 		case DELETE:
 			return this.delete(url);
 			
+		case OPTIONS:
+			return this.options(url, input);
+			
 		default:
 			throw new ConnectionException("Invalid connection method!");
 		}
@@ -171,6 +175,27 @@ public class Connection
 			ConnectionResult cr = request(input);
 			
 			if(cr == null) throw new ConnectionException("Unsuccessful POST request!");
+			
+			return cr;
+		} catch (IOException e) {
+			throw new ConnectionException(e.getMessage());
+		}
+	}
+	
+	public ConnectionResult options(String url, JSONObject input)
+	{
+		try {
+			URL uri = new URL(baseUri.toString() + url);
+			
+			connection = (HttpURLConnection) uri.openConnection();
+			
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("X-HTTP-Method-Override", "OPTIONS");
+			connection.setRequestProperty("Content-Type", "application/json");
+			
+			ConnectionResult cr = request(input);
+			
+			if(cr == null) throw new ConnectionException("Unsuccessful OPTIONS request!");
 			
 			return cr;
 		} catch (IOException e) {

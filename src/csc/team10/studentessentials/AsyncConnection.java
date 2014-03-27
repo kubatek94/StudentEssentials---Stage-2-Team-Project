@@ -55,6 +55,15 @@ public class AsyncConnection extends AsyncTask<String, Void, ConnectionResult> {
 		c.setMethod(ConnectionMethod.GET);
 		c.execute(url);
 	}
+
+	public void options(String url, JSONObject input, AsyncConnectionCallback callback, Object callbackContext)
+	{
+		AsyncConnection c = new AsyncConnection(this);
+		c.setInput(input);
+		c.setCallback(callback, callbackContext);
+		c.setMethod(ConnectionMethod.OPTIONS);
+		c.execute(url);
+	}
 	
 	public void post(String url, JSONObject input, AsyncConnectionCallback callback, Object callbackContext)
 	{

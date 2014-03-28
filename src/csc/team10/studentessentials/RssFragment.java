@@ -25,7 +25,7 @@ public class RssFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View inflate = inflater.inflate(R.layout.rss_layout, container, false);	
-
+		
 		// Start the RSSTask
 		RSSTask task = new RSSTask();		
 		// Set the input stream for the rss feed and execute.

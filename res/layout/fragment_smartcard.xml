@@ -33,7 +33,7 @@
         android:layout_marginLeft="19dp"
         android:layout_toRightOf="@+id/imageView2"
         android:fontFamily="sans-serif-light"
-        android:text="John Smith"
+        android:text="Sample Name"
         android:textSize="30sp" />
 
     <TextView
@@ -44,7 +44,7 @@
         android:layout_marginLeft="19dp"
         android:layout_toRightOf="@+id/imageView2"
         android:fontFamily="sans-serif-light"
-        android:text="Card Expiry: 30.09.16"
+        android:text="Card Expiry: 01.01.2001"
         android:textSize="25sp" />
 
     <TextView
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView3"
-        android:text="*123456789"
+        android:text="*89"
         android:textSize="70sp" />
 
     <TextView

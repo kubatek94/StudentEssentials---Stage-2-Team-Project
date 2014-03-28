@@ -1,8 +1,14 @@
 package csc.team10.studentessentials;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import csc.team10.studentessentials.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
+
+
+
 
 
 
@@ -11,6 +17,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -227,6 +234,8 @@ public class MainActivity extends Activity {
 
 	public static class Smartcard extends Fragment {
 
+		View smartcardView;
+		
 		public Smartcard() {
 			// Empty constructor required for fragment subclasses
 			
@@ -236,14 +245,79 @@ public class MainActivity extends Activity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			
+			smartcardView = inflater.inflate(R.layout.fragment_smartcard, container, false);
 
-
-			return inflater.inflate(R.layout.fragment_smartcard, container, false);
+			return smartcardView;
 		}
 		
 		public void onStart()
 		{
 			super.onStart();
+			
+			Authentication auth = new Authentication(getActivity().getApplicationContext());
+			AsyncConnection con = new AsyncConnection(
+					"http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App",
+					auth);
+
+			con.get("/students/" + auth.getStudentNumber() + "/information" , new AsyncConnectionCallback() {
+				public void onSuccess(Object callbackContext, ConnectionResult result) {
+					//Common c = new Common(getActivity());
+					
+					//Fragment smartcard = (Fragment)callbackContext;
+					
+					View v = (View)callbackContext;
+					
+					Log.d("info", "" + result.getStatus());
+					Log.d("info", "" + result.getResponse());
+					
+					if(result.getStatus() == 200)
+					{
+						try {
+							JSONObject res = new JSONObject(result.getResponse());
+							
+						//	c.showLongToast(result.getResponse());
+							
+							
+							if( res.optString("status").equalsIgnoreCase("success") )
+							{
+								JSONObject information = res.optJSONObject("data");
+								
+								String firstName = information.optString("firstName");
+								String lastName = information.optString("lastName");
+								String barcode = information.optString("barcode");
+								String expiry = information.optString("expiry");
+								String number = information.optString("number");
+								
+								Log.d("name", firstName + " " + lastName);
+								
+								TextView name = (TextView) v.findViewById(R.id.textView1);
+								name.setText(firstName + " " + lastName);
+								
+								TextView bc = (TextView) v.findViewById(R.id.barcode);
+								bc.setText(barcode);
+								
+								TextView exp = (TextView) v.findViewById(R.id.textView3);
+								exp.setText(expiry);
+								
+								TextView num = (TextView) v.findViewById(R.id.deal_title);
+								num.setText(number);
+								
+							}
+							
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+						//	e.printStackTrace();
+						}
+					}
+
+				}
+
+				public void onError(Object callbackContext,
+						ConnectionException exception) {
+
+				}
+
+			}, this.smartcardView);
 			
 			TextView tv = (TextView) getActivity().findViewById(R.id.barcode);
 			Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/barcode.ttf");
@@ -252,6 +326,9 @@ public class MainActivity extends Activity {
 			//	Toast.makeText(getActivity(), "TF is null", Toast.LENGTH_SHORT).show();
 			
 			tv.setTypeface(tf);
+			
+			
+			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		}
 	}
 
@@ -271,23 +348,22 @@ public class MainActivity extends Activity {
 			faqView = inflater.inflate(R.layout.fragment_faq, container, false);
 			// textView = (TextView) faq_view.findViewById(R.id.textView1);
 			return faqView;
+			
 		}
 
 		@Override
 		public void onStart() {
 			super.onStart();
-
+			
+			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			Authentication auth = new Authentication(getActivity().getApplicationContext());
 			AsyncConnection con = new AsyncConnection(
 					"http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App",
-					new Authentication(getActivity().getApplicationContext()));
+					auth);
 
-			con.get("/clubs/rtvvlF4Q", new AsyncConnectionCallback() {
-				public void onSuccess(Object callbackContext,
-						ConnectionResult result) {
-					View faq = (View) callbackContext;
-					TextView textView = (TextView) faq
-							.findViewById(R.id.textView1);
-					textView.setText(result.getResponse());
+			con.get("/students/" + auth.getStudentNumber() + "/information" , new AsyncConnectionCallback() {
+				public void onSuccess(Object callbackContext, ConnectionResult result) {
+					
 				}
 
 				public void onError(Object callbackContext,

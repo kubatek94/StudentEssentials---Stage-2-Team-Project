@@ -16,6 +16,7 @@
     
     <string name="title_activity_main">Main</string>
     <string name="button_logout">Logout</string>
+    <string name="user_guide">User Guide</string>
     
     
     <string-array name="deal_categories">

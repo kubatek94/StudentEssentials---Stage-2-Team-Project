@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#e5e5f2"
+    android:padding="5dip" >
+ 
+    <!-- Bar name-->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mimos"
+        android:textStyle="bold"/>
+ 
+    <!-- Location -->
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginTop="1dip"
+        android:text="NE1 1RF" />
+    
+    <TextView
+        android:id="@+id/tagline"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/location"
+        android:layout_marginTop="5dip"
+        android:gravity="center"
+        android:background="#000033"
+        android:textColor="#FFFFFF"
+        android:text="Tonight only! 3 trebbles for just £4!" />
+ 
+    <!-- Opening times -->
+    <TextView
+        android:id="@+id/times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/title"
+        android:gravity="right"
+        android:text="18:00-00:00"
+        android:layout_marginRight="5dip"/>
+    
+ 	<!-- Venue type -->
+    <TextView
+        android:id="@+id/venuetype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/location"
+        android:gravity="right"
+        android:background="#78AB46"
+        android:text="Bar"
+        android:layout_marginRight="5dip"/>
+ 
+</RelativeLayout>

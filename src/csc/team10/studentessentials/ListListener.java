@@ -1,4 +1,4 @@
-package csc.team10.RssHandling;
+package csc.team10.studentessentials;
 
 import java.util.List;
 

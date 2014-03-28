@@ -1,10 +1,9 @@
-package csc.team10.RssHandling;
+package csc.team10.studentessentials;
 
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 /* 									   *
  * Author: Connor Shields			   *
  * This class handles the input stream * 
@@ -39,8 +38,6 @@ public class Reader
 		saxParser.parse(url, handler);
 
 		// Returns a List of <RssItem>.
-		return handler.getItems();
-		
+		return handler.getItems();		
 	}
-
 }

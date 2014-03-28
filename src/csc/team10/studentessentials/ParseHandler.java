@@ -1,4 +1,4 @@
-package csc.team10.RssHandling;
+package csc.team10.studentessentials;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,17 @@ public class ParseHandler extends DefaultHandler
 	private boolean parsingTitle;
 	// Is the link being parsed.
 	private boolean parsingLink;
+	// Is an image being parsed.
+	private boolean parsingImage;
+
+	private boolean parsingDate;
+	
+	private boolean parsingDescription;
+	
+	private String description;
+	
+	private String image;
+	
 	
 	/*								*
 	 * Constructor to set rssItems. *
@@ -59,11 +70,29 @@ public class ParseHandler extends DefaultHandler
 		{
 			parsingTitle = true;
 		} 
+
 		// if the tag is the <link> tag set parsingLink to true.
 		else if ("link".equals(name)) 
 		{
 			parsingLink = true;		
-		} 
+		}
+		// if the 
+		else if ("description".equals(name))
+		{
+		    parsingDescription = true;
+		}
+		// if the tag is the <title> tag set parsingTitle to true.
+		else if ("pubDate".equals(name)) 
+		{
+			parsingDate = true;
+		}
+		//IMAGE
+		else if(localName.equals("enclosure"))
+		{
+            image = attributes.getValue("image");
+            currentItem.setImage(image);	
+            parsingImage = true;            
+        }
 	}
 	
 	/*												  *
@@ -71,24 +100,41 @@ public class ParseHandler extends DefaultHandler
 	 * and to end the currentItem.			          *
 	 * 												  */	
 	@Override
-	public void endElement(String uri, String localName, String qName) throws SAXException
+	public void endElement(String uri, String localName, String name) throws SAXException
 	{
 		// if the tag is the <item> tag then add the current item into the list rssItems 
 		//and set currentItem to null.
-		if ("item".equals(qName))
+		if ("item".equals(name))
 		{
 			rssItems.add(currentItem);
 			currentItem = null;	
 		}
 		// if the tag is the <title> tag set parsingTitle to false.
-		else if ("title".equals(qName)) 
+		else if ("title".equals(name)) 
 		{
 			parsingTitle = false;
 		}
 		// if the tag is the <link> tag set parsingLink to false.
-		else if ("link".equals(qName))
+		else if ("link".equals(name))
 		{
 			parsingLink = false;
+		}
+
+		// if the tag is the <description> tag set parsingDescription to false.
+		else if ("description".equals(name))
+		{
+		    parsingDescription = false;
+		    description = "";
+		}
+		
+		else if ("pubDate".equals(name)) 
+		{
+			parsingDate = false;
+		}
+		
+		else if("enclosure".equals(name))
+		{
+			parsingImage = false;
 		}
 	}
 	
@@ -105,7 +151,8 @@ public class ParseHandler extends DefaultHandler
 		// A check to see if an RssItem actually exists to put this into.
 			if (currentItem != null)
 			{	
-				currentItem.setTitle(new String(ch, start, length));
+				String title = new String(ch, start, length);
+				currentItem.setTitle(title);
 			}
 			
 		// If the element has a link then put the contents of it into the title field in currentItem(an RssItem).
@@ -114,11 +161,40 @@ public class ParseHandler extends DefaultHandler
 			// A check to see if an RssItem actually exists to put this into.
 			if (currentItem != null) 
 			{
-				currentItem.setLink(new String(ch, start, length));
+				String link = new String(ch, start, length);
+				currentItem.setLink(link);
 				parsingLink = false;
 			}
 			
 		}
-	}
-	
+		else if (parsingDescription)
+		{
+			// A check to see if an RssItem actually exists to put this into.
+			if (currentItem != null) 
+			{
+				description = description + new String(ch, start, length);
+				currentItem.setDescription(description);
+			}
+		}
+		else if (parsingDate)
+		{
+			// A check to see if an RssItem actually exists to put this into.
+			if (currentItem != null) 
+			{
+				String date = new String(ch, start, length);
+				String croppedDate = date.substring(5, 12);
+				currentItem.setDate(croppedDate);
+				parsingDate = false;
+			}
+		}
+		else if (parsingImage)
+		{
+			// A check to see if an RssItem actually exists to put this into.
+			if (currentItem != null) 
+			{	
+				currentItem.setImage(image);			
+				System.out.println("hello");
+			}
+		}
+	}	
 }

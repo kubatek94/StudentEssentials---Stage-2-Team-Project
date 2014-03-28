@@ -2,30 +2,30 @@ package csc.team10.studentessentials;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import csc.team10.studentessentials.R;
-import com.google.analytics.tracking.android.EasyTracker;
-import android.os.Bundle;
+
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.content.res.Configuration;
-import android.graphics.Typeface;
-import android.view.MenuInflater;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class MainActivity extends Activity {
 	private ListView mDrawerList;
@@ -81,11 +81,11 @@ public class MainActivity extends Activity {
 		getActionBar().setHomeButtonEnabled(true);
 
 		// Sets the default fragment to 0 (news)
-		/*
-		 * Fragment fragment1 = new Deals(); FragmentManager fragmentManager =
-		 * getFragmentManager(); fragmentManager.beginTransaction()
-		 * .replace(R.id.content_frame, fragment1).commit();
-		 */
+		
+		  Fragment fragment1 = new RssFragment(); FragmentManager fragmentManager =
+		  getFragmentManager(); fragmentManager.beginTransaction()
+		  .replace(R.id.content_frame, fragment1).commit();
+		 
 		mDrawerList.setItemChecked(0, true);
 		setTitle(myStringArray[0]);
 

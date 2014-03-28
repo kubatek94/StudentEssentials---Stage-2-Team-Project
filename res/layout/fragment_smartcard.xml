@@ -6,52 +6,72 @@
     android:background="@drawable/scardbg"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/deal_title"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif-light"
-        android:text="Card Expiry: 30.09.16"
-        android:textSize="25sp" />
+    <ImageView
+        android:id="@+id/deal_image"
+        android:layout_width="192dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/logo" />
 
-    <TextView
-        android:id="@+id/deal_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView2"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif-light"
-        android:text="Student No: 125689524"
-        android:textSize="25sp" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="125dp"
+        android:layout_height="162dp"
+        android:layout_alignLeft="@+id/deal_image"
+        android:layout_alignTop="@+id/deal_title"
+        android:layout_margin="20dp"
+        android:layout_marginLeft="21dp"
+        android:src="@drawable/student_pic" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/deal_title"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/deal_title"
+        android:layout_marginLeft="19dp"
+        android:layout_toRightOf="@+id/imageView2"
         android:fontFamily="sans-serif-light"
         android:text="John Smith"
         android:textSize="30sp" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="130dp"
-        android:layout_height="284dp"
-        android:layout_alignRight="@+id/deal_image"
-        android:layout_centerVertical="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/student_pic" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginLeft="19dp"
+        android:layout_toRightOf="@+id/imageView2"
+        android:fontFamily="sans-serif-light"
+        android:text="Card Expiry: 30.09.16"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:text="*123456789"
+        android:textSize="70sp" />
+
+    <TextView
+        android:id="@+id/deal_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/deal_image"
+        android:layout_alignLeft="@+id/textView1"
+        android:fontFamily="sans-serif-light"
+        android:text="Student No: 125689524"
+        android:textSize="25sp" />
 
     <ImageView
-        android:id="@+id/deal_image"
-        android:layout_width="192dp"
-        android:layout_height="236dp"
-        android:layout_alignParentTop="false"
-        android:layout_centerHorizontal="false"
-        android:layout_margin="10dp"
-        android:src="@drawable/logo" />
+        android:id="@+id/imageView1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/deal_title"
+        android:layout_toRightOf="@+id/deal_image"
+        android:src="@drawable/nusu_logo" />
 
 </RelativeLayout>

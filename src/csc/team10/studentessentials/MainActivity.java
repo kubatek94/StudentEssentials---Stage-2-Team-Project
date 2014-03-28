@@ -4,6 +4,9 @@ import csc.team10.studentessentials.R;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+
+
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -22,24 +26,28 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.view.MenuInflater;
-
 
 public class MainActivity extends Activity {
 	private ListView mDrawerList;
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private String[] myStringArray = { "News", "Smart Card", "Deals & Discounts", "Student Nights Out", "FAQ" };
+	private String[] myStringArray = { "News", "Smart Card",
+			"Deals & Discounts", "Student Nights Out", "FAQ" };
 
 	public Authentication authentication;
 	public Common common;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+        
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+		
+
+
 		
 		common = new Common(this);
 		authentication = new Authentication(this);
@@ -51,19 +59,14 @@ public class MainActivity extends Activity {
 		mDrawerList.setAdapter(adapter);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+		
+
+        
+        
 		// set up the drawer's list view with items and click listener
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, myStringArray));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-
-
-
-
-
-
-
-
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		mDrawerLayout, /* DrawerLayout object */
@@ -73,52 +76,49 @@ public class MainActivity extends Activity {
 		) {
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
-                
-											// onPrepareOptionsMenu()
+
+				// onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
-                
+
 			}
 		};
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-
-
+		getActionBar().setHomeButtonEnabled(true);
 
 		// Sets the default fragment to 0 (news)
-		/*Fragment fragment1 = new Deals();
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment1).commit();*/
+		/*
+		 * Fragment fragment1 = new Deals(); FragmentManager fragmentManager =
+		 * getFragmentManager(); fragmentManager.beginTransaction()
+		 * .replace(R.id.content_frame, fragment1).commit();
+		 */
 		mDrawerList.setItemChecked(0, true);
 		setTitle(myStringArray[0]);
-
 
 	}
 
 	@Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-    
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+		inflater.inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	public void logMeOut(View view) {
@@ -134,27 +134,22 @@ public class MainActivity extends Activity {
 		finish();
 	}
 
+	/* Called whenever we call invalidateOptionsMenu() */
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// If the nav drawer is open, hide action items related to the content
+		// view
 
-
-
-	    /* Called whenever we call invalidateOptionsMenu() */
-	    @Override
-	    public boolean onPrepareOptionsMenu(Menu menu) {
-	        // If the nav drawer is open, hide action items related to the content view
-
-
-	        return super.onPrepareOptionsMenu(menu);
-	    }
-
+		return super.onPrepareOptionsMenu(menu);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 
-
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
-	          return true;
-	        }
+			return true;
+		}
 
 		switch (item.getItemId()) {
 		case R.id.button_logout:
@@ -190,42 +185,39 @@ public class MainActivity extends Activity {
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
-		
-		switch(position)
-		{
-			case 0: //news
-				//load news fragment
-				fragment = new RssFragment();
+
+		switch (position) {
+		case 0: // news
+			// load news fragment
+			fragment = new RssFragment();
 			break;
-				
-			case 1: //smart card
-				fragment = new Smartcard();
+
+		case 1: // smart card
+			fragment = new Smartcard();
 			break;
-				
-			case 2: //deals & discounts
-				fragment = new DealsDiscountsFragment();
+
+		case 2: // deals & discounts
+			fragment = new DealsDiscountsFragment();
 			break;
-				
-			case 3: //student nights out
+
+		case 3: // student nights out
 			break;
-				
-			case 4: //faq
-				fragment = new Faq();
+
+		case 4: // faq
+			fragment = new Faq();
 			break;
-				
-			default:
-				break;
+
+		default:
+			break;
 		}
-		
-		if(fragment != null)
-		{
-			//load selected fragment
+
+		if (fragment != null) {
+			// load selected fragment
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment)
-					.addToBackStack(null)
+					.replace(R.id.content_frame, fragment).addToBackStack(null)
 					.commit();
-			
+
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
 			setTitle(myStringArray[position]);
@@ -237,51 +229,69 @@ public class MainActivity extends Activity {
 
 		public Smartcard() {
 			// Empty constructor required for fragment subclasses
+			
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+			
 
-			return inflater.inflate(R.layout.fragment_smartcard, container,
-					false);
 
+			return inflater.inflate(R.layout.fragment_smartcard, container, false);
+		}
+		
+		public void onStart()
+		{
+			super.onStart();
+			
+			TextView tv = (TextView) getActivity().findViewById(R.id.barcode);
+			Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/barcode.ttf");
+			
+			//if(tv == null)
+			//	Toast.makeText(getActivity(), "TF is null", Toast.LENGTH_SHORT).show();
+			
+			tv.setTypeface(tf);
 		}
 	}
 
 	public static class Faq extends Fragment {
 
-		//Context context;
+		// Context context;
 		View faqView;
 
 		public Faq() {
-			//this.context = context;
+			// this.context = context;
 			// Empty constructor required for fragment subclasses
 		}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
 			faqView = inflater.inflate(R.layout.fragment_faq, container, false);
-			//textView = (TextView) faq_view.findViewById(R.id.textView1);
+			// textView = (TextView) faq_view.findViewById(R.id.textView1);
 			return faqView;
 		}
 
 		@Override
-		public void onStart()
-		{
+		public void onStart() {
 			super.onStart();
 
-			AsyncConnection con = new AsyncConnection("http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App", new Authentication(getActivity().getApplicationContext()));
+			AsyncConnection con = new AsyncConnection(
+					"http://homepages.cs.ncl.ac.uk/2013-14/csc2022_team10/App",
+					new Authentication(getActivity().getApplicationContext()));
 
-			con.get("/clubs/rtvvlF4Q", new AsyncConnectionCallback()
-			{
-				public void onSuccess(Object callbackContext, ConnectionResult result) {
-					View faq = (View)callbackContext;
-					TextView textView = (TextView) faq.findViewById(R.id.textView1);
+			con.get("/clubs/rtvvlF4Q", new AsyncConnectionCallback() {
+				public void onSuccess(Object callbackContext,
+						ConnectionResult result) {
+					View faq = (View) callbackContext;
+					TextView textView = (TextView) faq
+							.findViewById(R.id.textView1);
 					textView.setText(result.getResponse());
 				}
-				public void onError(Object callbackContext, ConnectionException exception) {
+
+				public void onError(Object callbackContext,
+						ConnectionException exception) {
 
 				}
 
